@@ -1,0 +1,9 @@
+[package]
+name = "gitea-timings"
+version = "0.1.0"
+authors = ["DuckDuckWhale"]
+edition = "2018"
+
+[dependencies]
+serde = "1.0.117"
+ureq = { version = "1.5.2", features = ["json"] }
