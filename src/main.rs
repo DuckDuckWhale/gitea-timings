@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 
 use serde::Deserialize;
+use unicode_width::UnicodeWidthStr;
 
 #[derive(Deserialize)]
 struct TrackedTime {
@@ -50,10 +51,9 @@ fn main() {
 	times.sort_unstable_by(|a, b| a.0.cmp(&b.0).reverse().then(a.1.cmp(&b.1)));
 
 	println!(
-		"In the last 24 hours, you spent {} hours, {} minutes and {} seconds on {} issues{}",
+		"You spent {} hours and {} minutes on {} issues in the last 24 hours{}",
 		seconds / 3600,
-		seconds / 60 % 60,
-		seconds % 60,
+		(seconds + 30) / 60 % 60,
 		times.len(),
 		if times.is_empty() { '.' } else { ':' }
 	);
@@ -69,7 +69,11 @@ fn main() {
 				time % 60,
 				title
 			);
-			println!("{}{}|", line, " ".repeat(separator.len() - line.len() - 1));
+			println!(
+				"{}{}|",
+				line,
+				" ".repeat(separator.len() - line.width() - 1)
+			);
 		}
 		println!("{}", separator);
 	}
