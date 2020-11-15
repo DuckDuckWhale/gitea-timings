@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 
+use chrono::{Duration as OldDuration, SecondsFormat, Utc};
 use serde::Deserialize;
 use unicode_width::UnicodeWidthStr;
 
@@ -19,8 +20,14 @@ struct Issue {
 fn main() {
 	let token = fs::read_to_string("time-tracker-token")
 		.expect("Failed to read token from `time-tracker-token`.");
+	let since = Utc::now()
+		.checked_sub_signed(OldDuration::hours(24))
+		.expect("Overflowed while trying to subtract 24 hours from now.");
 	let response = ureq::get("https://git.duckduckwhale.com/api/v1/user/times")
-		.query("since", "2020-11-12T01:18:22-08:00")
+		.query(
+			"since",
+			since.to_rfc3339_opts(SecondsFormat::Secs, true).as_ref(),
+		)
 		.set("Authorization", format!("token {}", token).as_ref())
 		.timeout_connect(10_000)
 		.call();

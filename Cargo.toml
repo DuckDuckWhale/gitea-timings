@@ -5,6 +5,7 @@ authors = ["DuckDuckWhale"]
 edition = "2018"
 
 [dependencies]
+chrono = "0.4.19"
 serde = "1.0.117"
 unicode-width = "0.1.8"
 ureq = { version = "1.5.2", features = ["json"] }
