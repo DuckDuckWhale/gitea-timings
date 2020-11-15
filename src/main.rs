@@ -66,22 +66,17 @@ fn main() {
 	);
 	if let Some(max_title_len) = times.iter().map(|(_, title)| title.len()).max() {
 		let max_len = max_title_len + 2;
-		let separator = format!("+----------+{}+", "-".repeat(max_len));
-		println!("{}", separator);
+		println!("┌──────────┬{}┐", "─".repeat(max_len));
 		for (time, title) in times {
 			let line = format!(
-				"| {:0>2}:{:0>2}:{:0>2} | {}",
+				"│ {:0>2}:{:0>2}:{:0>2} │ {}",
 				time / 3600,
 				time / 60 % 60,
 				time % 60,
 				title
 			);
-			println!(
-				"{}{}|",
-				line,
-				" ".repeat(separator.len() - line.width() - 1)
-			);
+			println!("{}{}│", line, " ".repeat(max_len + 13 - line.width() - 1));
 		}
-		println!("{}", separator);
+		println!("└──────────┴{}┘", "─".repeat(max_len));
 	}
 }
