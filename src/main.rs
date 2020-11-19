@@ -47,6 +47,8 @@ fn main() {
 		.into_json_deserialize::<Vec<TrackedTime>>()
 		.expect("Failed to parse response as UTF-8 string.");
 	let seconds: u64 = times.iter().map(|tracked| tracked.time).sum();
+	// round up if more then half a minute is left
+	let minutes = (seconds + 30) / 60;
 	let mut map = HashMap::new();
 	for tracked in times {
 		let (time, _) = map
@@ -59,8 +61,8 @@ fn main() {
 
 	println!(
 		"You spent {} hours and {} minutes on {} issues in the last 24 hours{}",
-		seconds / 3600,
-		(seconds + 30) / 60 % 60,
+		minutes / 60,
+		minutes % 60,
 		times.len(),
 		if times.is_empty() { '.' } else { ':' }
 	);
