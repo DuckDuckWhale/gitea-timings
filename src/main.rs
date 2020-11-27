@@ -66,7 +66,7 @@ fn main() {
 		times.len(),
 		if times.is_empty() { '.' } else { ':' }
 	);
-	if let Some(max_title_len) = times.iter().map(|(_, title)| title.len()).max() {
+	if let Some(max_title_len) = times.iter().map(|(_, title)| title.width()).max() {
 		let max_len = max_title_len + 2;
 		println!("┌──────────┬{}┐", "─".repeat(max_len));
 		for (time, title) in times {
